@@ -18,11 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 
 class LendingManagerImplTest {
-    /*
-    TODO
-    Provide at least four differently purposed Junit test cases that cover successful borrow and
-    return transactions (ie 2 x 2 overall)
-     */
     @Test
     @DisplayName("Test successful borrow transaction by checking the borrowed book is correct")
     void checkSuccessfulBorrowBook() {
@@ -34,13 +29,15 @@ class LendingManagerImplTest {
     }
 
     @Test
-    @DisplayName("Test successful borrow transaction by checking that the borrowed date is correct")
+    @DisplayName("Test successful borrow transaction by borrowing a book two times")
     void checkSuccessfulBorrowBook2() {
         RMITLibraryRecordsDAO lrdao = new RMITLibraryRecordsDAO();
         LendingManagerImpl lendingManager = new LendingManagerImpl();
         RMITLibraryItem book = new RMITLibraryItem(100L, "ISBN");
         lendingManager.setLibraryRecordDAO(lrdao);
-        assertEquals(lendingManager.borrowBook(book).getBorrowingDate(), new Date());
+        assertEquals(lendingManager.borrowBook(book).getBook(), book);
+        assertEquals(lendingManager.returnBook(book).getBook(), book);
+        assertEquals(lendingManager.borrowBook(book).getBook(), book);
     }
     @Test
     @DisplayName("Test successful return transaction by checking the returned book is correct")
@@ -54,19 +51,18 @@ class LendingManagerImplTest {
     }
 
     @Test
-    @DisplayName("Test successful return transaction by checking the returned date is correct")
+    @DisplayName("Test successful return transaction by returning a book multiple times")
     void checkSuccessfulReturnBook2() {
         RMITLibraryRecordsDAO lrdao = new RMITLibraryRecordsDAO();
         LendingManagerImpl lendingManager = new LendingManagerImpl();
         RMITLibraryItem book = new RMITLibraryItem(100L, "ISBN");
         lendingManager.setLibraryRecordDAO(lrdao);
-        assertEquals(lendingManager.borrowBook(book).getBorrowingDate(), new Date());
-        assertEquals(lendingManager.returnBook(book).getReturningDate(), new Date());
+        assertEquals(lendingManager.borrowBook(book).getBook(), book);
+        assertEquals(lendingManager.returnBook(book).getBook(), book);
+        assertEquals(lendingManager.borrowBook(book).getBook(), book);
+        assertEquals(lendingManager.returnBook(book).getBook(), book);
     }
-    /*
-    TODO
-    Provide at least two differently purposed Junit test cases for unsuccessful borrow / return transactions.
-     */
+
     @Test
     @DisplayName("Test unsuccessful borrow transaction by borrowing a book that hasn't been returned")
     void checkUnsuccessfulBorrowBook() {
@@ -92,5 +88,34 @@ class LendingManagerImplTest {
             lendingManager.returnBook(book);
         });
         assertEquals(thrownException.getMessage(), "This book is not borrowed.");
+    }
+
+    @Test
+    @DisplayName("Test unsuccessful borrow transaction by borrowing a book when record limit is reached")
+    void checkUnsuccessfulReturnBook2(){
+        RMITLibraryRecordsDAO lrdao = new RMITLibraryRecordsDAO();
+        LendingManagerImpl lendingManager = new LendingManagerImpl();
+        RMITLibraryItem book = new RMITLibraryItem(100L, "ISBN");
+        lrdao.setRecordLimit(-1);
+        lendingManager.setLibraryRecordDAO(lrdao);
+        IllegalStateException thrownException = assertThrowsExactly(IllegalStateException.class, () -> {
+            lendingManager.borrowBook(book);
+        });
+        assertEquals(thrownException.getMessage(), "New library record can't be saved.");
+    }
+
+    @Test
+    @DisplayName("Test unsuccessful return transaction by returning a book when record limit is reached")
+    void checkUnsuccessfulReturnBook3(){
+        RMITLibraryRecordsDAO lrdao = new RMITLibraryRecordsDAO();
+        LendingManagerImpl lendingManager = new LendingManagerImpl();
+        RMITLibraryItem book = new RMITLibraryItem(100L, "ISBN");
+        lrdao.setRecordLimit(0);
+        lendingManager.setLibraryRecordDAO(lrdao);
+        lendingManager.borrowBook(book);
+        IllegalStateException thrownException = assertThrowsExactly(IllegalStateException.class, () -> {
+            lendingManager.returnBook(book);
+        });
+        assertEquals(thrownException.getMessage(), "Library record can't be updated.");
     }
 }
