@@ -1,7 +1,7 @@
 /**
  *
- * Name: John Smith (( Update with your name here ))
- * Student ID: s45045012  (( Update with your ID))
+ * Name: Sovatharo Huy
+ * Student ID: s3783867
  *
  * [OPTIONAL: add any notes or comments here about the code]
  */
