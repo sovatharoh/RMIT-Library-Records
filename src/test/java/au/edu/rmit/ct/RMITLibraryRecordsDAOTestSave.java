@@ -8,24 +8,43 @@
 
 package au.edu.rmit.ct;
 
+import com.wmw.examples.mockito.library.LibraryRecord;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.fail;
+import java.util.Date;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class RMITLibraryRecordsDAOTestSave {
 
     //examples only.
 
     @Test
-    @DisplayName("Example")
-    void findByBook() {
-        fail("not implemented yet. Just an example test method.");
+    @DisplayName("Test successful save")
+    void checkSuccessfulSave() {
+        RMITLibraryRecordsDAO lrdao = new RMITLibraryRecordsDAO();
+        RMITLibraryItem book = new RMITLibraryItem(100L, "ISBN");
+        LibraryRecord record = new LibraryRecord();
+        record.setId(100L);
+        record.setBook(book);
+        record.setBorrowingDate(new Date());
+        assertEquals(record.getBook(), book);
+        assertTrue(lrdao.save(record));
     }
 
     @Test
-    @DisplayName("Example2")
-    void save() {
-        fail("not implemented yet. Just an example test method.");
+    @DisplayName("Test save exceeding the record limit")
+    void checkUnsuccessfulSave() {
+        RMITLibraryRecordsDAO lrdao = new RMITLibraryRecordsDAO();
+        RMITLibraryItem book = new RMITLibraryItem(100L, "ISBN");
+        LibraryRecord record = new LibraryRecord();
+        record.setId(100L);
+        record.setBook(book);
+        record.setBorrowingDate(new Date());
+        assertEquals(record.getBook(), book);
+        lrdao.setRecordLimit(0);
+        assertTrue(lrdao.save(record));
+        assertFalse(lrdao.save(record));
     }
 }

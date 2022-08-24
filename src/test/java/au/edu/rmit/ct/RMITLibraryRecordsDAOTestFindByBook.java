@@ -59,9 +59,4 @@ class RMITLibraryRecordsDAOTestFindByBook {
         });
         assertEquals("Book class usage suspended. Expecting RMITLibraryItem.class", exception.getMessage());
     }
-    @Test
-    @DisplayName("Test unsuccessful find by book")
-    void save() {
-        fail("not implemented yet. Just an example test method.");
-    }
 }
