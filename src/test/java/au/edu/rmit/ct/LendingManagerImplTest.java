@@ -43,7 +43,7 @@ class LendingManagerImplTest {
         assertEquals(lendingManager.borrowBook(book).getBorrowingDate(), new Date());
     }
     @Test
-    @DisplayName("Test successful return transaction")
+    @DisplayName("Test successful return transaction by checking the returned book is correct")
     void checkSuccessfulReturnBook() {
         RMITLibraryRecordsDAO lrdao = new RMITLibraryRecordsDAO();
         LendingManagerImpl lendingManager = new LendingManagerImpl();
@@ -83,7 +83,7 @@ class LendingManagerImplTest {
 
     @Test
     @DisplayName("Test unsuccessful return transaction by returning a book that hasn't been borrowed")
-    void checkUnsuccesfulReturnBook(){
+    void checkUnsuccessfulReturnBook(){
         RMITLibraryRecordsDAO lrdao = new RMITLibraryRecordsDAO();
         LendingManagerImpl lendingManager = new LendingManagerImpl();
         RMITLibraryItem book = new RMITLibraryItem(100L, "ISBN");
