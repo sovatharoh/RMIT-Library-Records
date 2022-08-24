@@ -23,7 +23,7 @@ class RMITLibraryRecordsDAOTestFindByBook {
     //examples only.
 
     @Test
-    @DisplayName("Test successful find by book")
+    @DisplayName("Test successful find by book of class RMITLibraryItem")
     void checkSuccessfulFindByBook() {
         RMITLibraryRecordsDAO lrdao = new RMITLibraryRecordsDAO();
         RMITLibraryItem book = new RMITLibraryItem(100L, "ISBN");
@@ -44,8 +44,22 @@ class RMITLibraryRecordsDAOTestFindByBook {
         assertEquals(lrdao.findByBook(book).size(), 0);
     }
     @Test
+    @DisplayName("Test find by book by searching with book not in records list should return empty list")
+    void checkSuccessfulFindByBook3(){
+        RMITLibraryRecordsDAO lrdao = new RMITLibraryRecordsDAO();
+        RMITLibraryItem book = new RMITLibraryItem(100L, "ISBN");
+        RMITLibraryItem book2 = new RMITLibraryItem(200L, "ISBN");
+        LibraryRecord record = new LibraryRecord();
+        record.setId(100L);
+        record.setBook(book);
+        record.setBorrowingDate(new Date());
+        assertEquals(record.getBook(), book);
+        assertTrue(lrdao.save(record));
+        assertEquals(lrdao.findByBook(book2).size(), 0);
+    }
+    @Test
     @DisplayName("Test unsuccessful find by book by searching with book of class Book")
-    void checkUnsuccessfulFindByBook1(){
+    void checkUnsuccessfulFindByBook(){
         RMITLibraryRecordsDAO lrdao = new RMITLibraryRecordsDAO();
         Book book = new Book();
         LibraryRecord record = new LibraryRecord();

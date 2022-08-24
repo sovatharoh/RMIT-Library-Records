@@ -28,7 +28,7 @@ class LendingManagerImplTestCheckRI {
     }
 
     @Test
-    @DisplayName("Test unsuccessful checkRecordIntegrity failure from due to multiple returning dates null")
+    @DisplayName("Test unsuccessful checkRecordIntegrity failure due to multiple returning dates null")
     void checkUnsuccessfulRecordIntegrity2(){
         RMITLibraryRecordsDAO lrdao = new RMITLibraryRecordsDAO();
         LendingManagerImpl lendingManager = new LendingManagerImpl();
