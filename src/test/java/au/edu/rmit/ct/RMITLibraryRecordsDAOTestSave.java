@@ -3,7 +3,8 @@
  * Name: Sovatharo Huy
  * Student ID: s3783867
  *
- * [OPTIONAL: add any notes or comments here about the code]
+ *  LibraryRecordsDao should not allow the saving of null values. checkUnsuccessfulSaveNullValue() test is intended to
+ *  fail until this is fixed.
  */
 
 package au.edu.rmit.ct;
@@ -34,7 +35,7 @@ class RMITLibraryRecordsDAOTestSave {
     }
 
     @Test
-    @DisplayName("Test save exceeding the record limit")
+    @DisplayName("Test unsuccessful save exceeding the record limit")
     void checkUnsuccessfulSave() {
         RMITLibraryRecordsDAO lrdao = new RMITLibraryRecordsDAO();
         RMITLibraryItem book = new RMITLibraryItem(100L, "ISBN");
@@ -46,5 +47,12 @@ class RMITLibraryRecordsDAOTestSave {
         lrdao.setRecordLimit(0);
         assertTrue(lrdao.save(record));
         assertFalse(lrdao.save(record));
+    }
+
+    @Test
+    @DisplayName("Test unsuccessful save with null record")
+    void checkUnsuccessfulSaveNullValue() {
+        RMITLibraryRecordsDAO lrdao = new RMITLibraryRecordsDAO();
+        assertFalse(lrdao.save(null));
     }
 }
