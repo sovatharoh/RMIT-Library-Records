@@ -3,7 +3,7 @@
  * Name: Sovatharo Huy
  * Student ID: s3783867  (( Update with your ID))
  *
- * [OPTIONAL: add any notes or comments here about the code]
+ * Only testing failures because successful functionality have been covered in other test cases.
  */
 
 package au.edu.rmit.ct;
