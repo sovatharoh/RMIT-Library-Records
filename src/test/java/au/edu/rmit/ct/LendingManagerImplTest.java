@@ -39,6 +39,18 @@ class LendingManagerImplTest {
         assertEquals(lendingManager.returnBook(book).getBook(), book);
         assertEquals(lendingManager.borrowBook(book).getBook(), book);
     }
+
+    @Test
+    @DisplayName("Test successful borrow transaction by borrowing two different books")
+    void checkSuccesfulBorrowBook3() {
+        RMITLibraryRecordsDAO lrdao = new RMITLibraryRecordsDAO();
+        LendingManagerImpl lendingManager = new LendingManagerImpl();
+        RMITLibraryItem book = new RMITLibraryItem(100L, "ISBN");
+        RMITLibraryItem book2 = new RMITLibraryItem(200L, "ISBN");
+        lendingManager.setLibraryRecordDAO(lrdao);
+        assertEquals(lendingManager.borrowBook(book).getBook(), book);
+        assertEquals(lendingManager.borrowBook(book2).getBook(), book2);
+    }
     @Test
     @DisplayName("Test successful return transaction by checking the returned book is correct")
     void checkSuccessfulReturnBook() {
@@ -61,6 +73,19 @@ class LendingManagerImplTest {
         assertEquals(lendingManager.returnBook(book).getBook(), book);
         assertEquals(lendingManager.borrowBook(book).getBook(), book);
         assertEquals(lendingManager.returnBook(book).getBook(), book);
+    }
+    @Test
+    @DisplayName("Test successful return transaction by borrowing two different books and then returning them")
+    void checkSuccesfulReturnBook3() {
+        RMITLibraryRecordsDAO lrdao = new RMITLibraryRecordsDAO();
+        LendingManagerImpl lendingManager = new LendingManagerImpl();
+        RMITLibraryItem book = new RMITLibraryItem(100L, "ISBN");
+        RMITLibraryItem book2 = new RMITLibraryItem(200L, "ISBN");
+        lendingManager.setLibraryRecordDAO(lrdao);
+        assertEquals(lendingManager.borrowBook(book).getBook(), book);
+        assertEquals(lendingManager.borrowBook(book2).getBook(), book2);
+        assertEquals(lendingManager.returnBook(book).getBook(), book);
+        assertEquals(lendingManager.returnBook(book2).getBook(), book2);
     }
 
     @Test
@@ -89,7 +114,6 @@ class LendingManagerImplTest {
         });
         assertEquals(thrownException.getMessage(), "This book is not borrowed.");
     }
-
     @Test
     @DisplayName("Test unsuccessful borrow transaction by borrowing a book when record limit is reached")
     void checkUnsuccessfulReturnBook2(){
